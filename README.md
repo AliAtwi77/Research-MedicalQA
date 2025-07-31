@@ -14,19 +14,19 @@ This notebook builds a concept-level knowledge base for each answer option in th
   Attempts to extract subject–predicate–object (SPO) triplets related to each answer option from the UMLS knowledge graph.
 
 - **Fallback: PubMed Sentence Retrieval**  
-  If fewer than 60 triplets are available, additional context is retrieved from PubMed abstracts using keyword-based search.
+  If number of triplets retrieved < 60, additional context is retrieved from PubMed abstracts using keyword-based search.
 
 - **Masking Strategy**  
   The answer option is masked with `[MASK]` in each sentence to prepare for contextual embedding (as in mention vector modeling).
 
 - **Embedding with Bio_ClinicalBERT**  
-  Masked sentences are embedded using [`emilyalsentzer/Bio_ClinicalBERT`](https://arxiv.org/abs/1904.03323), a clinical domain-specific transformer model.
+  Masked sentences are embedded using [`emilyalsentzer/Bio_ClinicalBERT`](https://arxiv.org/abs/1904.03323), a clinical domain-specific transformer model to generate Mention Vectors.
 
 - **Averaging**  
   The sentence embeddings for each answer option are averaged to produce a single concept vector.
 
 - **Storage**  
-  Each answer option is mapped to its final averaged embedding and saved in a JSON file:  
+  Each answer option is mapped to its final averaged embedding and context, and saved in a JSON file:  
   `optionll_embeddings_and_sentences.json`
 
 ---
@@ -50,7 +50,7 @@ This notebook performs medical question answering using the knowledge vectors:
 - **Generate Answer**
 ---
 
-##Requirements
+## Requirements
   1. HuggingFace Token
   2. UMLS License: A valid license is required to access and download the Unified Medical Language System (UMLS) data
   3. Access to the PubMed API: Access to PubMed’s E-utilities (Entrez Programming Utilities) for retrieving biomedical abstracts
@@ -59,9 +59,6 @@ This notebook performs medical question answering using the knowledge vectors:
 ## 🧪 Models Used
   emilyalsentzer/Bio_ClinicalBERT
   meta-llama/Llama-3.1-8B-Instruct
-##📚 Dataset
-  MedQA (USMLE-style questions)
-  
-**Knowledge Source**:  
-  - Unified Medical Language System (UMLS)  
-  - PubMed (via Entrez API)
+
+## Model Selection Folder:
+  Contains a file where we tested different LLM models on a simple prompt to select which model to use: (Mistral, DeepSeek, Llama)
